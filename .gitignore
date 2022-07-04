@@ -39,6 +39,7 @@ AeUGame_WebGLBuild.zip
 
 # Visual Studio cache directory
 .vs/
+.vsconfig
 
 # Gradle cache directory
 .gradle/
