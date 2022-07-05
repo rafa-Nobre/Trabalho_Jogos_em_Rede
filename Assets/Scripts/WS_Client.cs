@@ -24,7 +24,7 @@ public class WS_Client : MonoBehaviour
     }
     void Start()
     {
-        ws = new WebSocket("ws://localhost:8080");
+        ws = new WebSocket("ws://aeugame2022.herokuapp.com");
         ws.OnMessage += (sender, e) =>
         {
             //Debug.Log("Mensagem recebida de " + ((WebSocket)sender).Url + ", Dado: " + e.Data);
