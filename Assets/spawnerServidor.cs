@@ -158,10 +158,19 @@ public class spawnerServidor : MonoBehaviour
              y = (float)datas["y"];
              z = (float)datas["z"]; */
             posicaojogadores = new Vector3(x, y, z);
-            jogadores[IDjogadores].transform.position = posicaojogadores;
-            //Debug.Log(jogadores[IDjogadores].transform.position);
-            //=======anim==========
-            jogadores[IDjogadores].transform.eulerAngles = new Vector3(jogadores[IDjogadores].transform.localRotation.eulerAngles.x, ry, jogadores[IDjogadores].transform.localRotation.eulerAngles.z);
+            try
+            {
+                jogadores[IDjogadores].transform.position = posicaojogadores;
+
+                //Debug.Log(jogadores[IDjogadores].transform.position);
+                //=======anim==========
+                jogadores[IDjogadores].transform.eulerAngles = new Vector3(jogadores[IDjogadores].transform.localRotation.eulerAngles.x, ry, jogadores[IDjogadores].transform.localRotation.eulerAngles.z);
+            }
+            catch
+            {
+                Debug.Log("acesso a chave inexistente!");
+            }
+            
 
             //obj[numPlayers].transform.position = posicaojogadores;
         }
