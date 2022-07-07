@@ -4,9 +4,12 @@ using UnityEngine;
 using Newtonsoft.Json;
 public class Player : MonoBehaviour
 {
-    public int playerNumber = 0;
+    public string playerAtual = "";
+    public string IDPlayer = "";
 
     public bool liberarposicao = false;
+
+    public bool destruir = false;
     
     CharacterController controller; //implementação da colisão atravez do CharacterController;
     Vector3 forward; //movimento em z, frente e trás;
@@ -23,6 +26,8 @@ public class Player : MonoBehaviour
     float timeToMaxHeight = 0.5f;
     //----------------------------------
     private Animator anim;
+
+    int animaux = 0;
     //public float speed;
     //public float jump;
     //public float gravity;
@@ -48,6 +53,10 @@ public class Player : MonoBehaviour
     public int itemscollected = 0;
 
     public int enemys = 0;
+
+    public string IDpartida = "";
+
+    public bool idpronto = false;
     void Awake()
     {
         instance = this;
@@ -59,17 +68,30 @@ public class Player : MonoBehaviour
         jumpSpeed = (2 * maxJumpHeigth) / timeToMaxHeight; //jumpSpeed = (2*Hmax)/t
 
         anim = GetComponent<Animator>();
+        var rposition = new Vector3(UnityEngine.Random.Range(-2.0f, 2.0f), 0, UnityEngine.Random.Range(-2.0f, 2.0f));
+        transform.position = transform.position + rposition;
 
     }
 
     // Update is called once per frame
     void Update()
-    {   
-        if(playerNumber == 0){
+    {
+
+        if(destruir){
+            Destroy(this.gameObject);
+        }
+
+        if(idpronto){
+           playerAtual =  IDPlayer;
+           idpronto = false;
+        }
+
+        if(IDPlayer.Equals(playerAtual)){
             if(health > 0){
                 Move();
             }else{
                 anim.SetInteger("transition", 6);
+                animaux = 6;
             }
 
             if(itemscollected == 4 && auxItems==true){
@@ -83,13 +105,18 @@ public class Player : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(playerNumber == 0 && liberarposicao){
+        if(IDPlayer.Equals(playerAtual) && liberarposicao){
                var jsonPayload = JsonConvert.SerializeObject(new
                     {
                         type = "posicao",
+                        idPlayer = IDPlayer,
+                        idPartida = IDpartida,
                         x = transform.position.x,
                         y = transform.position.y,
-                        z = transform.position.z
+                        z = transform.position.z,
+                        ry = transform.localRotation.eulerAngles.y,
+                        anim = animaux,
+                        
                     });
                 WS_Client.instance.ws.Send(jsonPayload);
                 //Debug.Log("posicao player0: x"+transform.position.x+" y"+transform.position.y+" z"+transform.position.z);
@@ -109,6 +136,7 @@ public class Player : MonoBehaviour
         if(controller.isGrounded){
             if(anim.GetInteger("transition") == 2){
                 anim.SetInteger("transition", 0);
+                animaux = 0;
             }
         }
 
@@ -120,9 +148,11 @@ public class Player : MonoBehaviour
             //anim.SetInteger("transition", 1);
             if(Input.GetKey(KeyCode.Mouse1)){
                     anim.SetInteger("transition", 4);
+                    animaux = 4;
                 }
             else{
-                    anim.SetInteger("transition", 1); 
+                    anim.SetInteger("transition", 1);
+                    animaux = 1; 
             }
         }
         else{
@@ -131,14 +161,17 @@ public class Player : MonoBehaviour
                     //anim.SetInteger("transition", 3);
                     if(Input.GetKeyDown(KeyCode.Mouse0)){
                         anim.SetInteger("transition", 5);
+                        animaux = 5;
                     }
                     else{
                         anim.SetInteger("transition", 3);
+                        animaux = 3;
                     }
                 }
             else{
                if(anim.GetInteger("transition") == 1 || anim.GetInteger("transition") == 3){
-                    anim.SetInteger("transition", 0); 
+                    anim.SetInteger("transition", 0);
+                    animaux = 0; 
                 }
             }
 
@@ -155,6 +188,7 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space) && controller.isGrounded){
             vertical = jumpSpeed * Vector3.up;
             anim.SetInteger("transition", 2);
+            animaux = 2;
         }
 
         if(vertical.y > 0 && (controller.collisionFlags & CollisionFlags.Above) != 0){
@@ -196,4 +230,5 @@ public class Player : MonoBehaviour
     public void AddItem(){
         itemscollected ++;
     }
+
 }

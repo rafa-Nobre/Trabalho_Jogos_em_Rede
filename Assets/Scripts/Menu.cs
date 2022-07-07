@@ -47,6 +47,10 @@ public class Menu : MonoBehaviour
         SceneManager.LoadScene(lvlName);
     }
 
+    public void fecharWS(){
+        WS_Client.instance.ws.Close();
+    }
+
     public void Exit(){
         Application.Quit();
     }

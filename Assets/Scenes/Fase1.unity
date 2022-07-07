@@ -5117,6 +5117,18 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 661587993}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: fecharWS
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 661587993}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: RestartGame
         m_Mode: 5
         m_Arguments:
@@ -23069,12 +23081,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1604bfc44f81f8e45bac42b6fc986a34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAtual: 
+  IDPlayer: 
+  liberarposicao: 0
+  destruir: 0
   audiocontroller: {fileID: 588420108}
   characterBody: {fileID: 1838146230}
   health: 3
   municao: 0
   itemscollected: 0
   enemys: 0
+  IDpartida: 
+  idpronto: 0
 --- !u!4 &1838146230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 655b093beeb8d554993c8ceee3af6f92, type: 3}

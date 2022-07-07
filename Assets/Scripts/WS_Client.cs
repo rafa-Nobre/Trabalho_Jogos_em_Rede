@@ -11,6 +11,13 @@ public class WS_Client : MonoBehaviour
     public static WS_Client instance;
     public WebSocket ws;
 
+    bool definirpartida = false;
+    bool definirIDplayer = false;
+
+    string idp = "";
+
+    string idpart = "";
+
     void Awake()
     {
         instance = this;
@@ -24,7 +31,8 @@ public class WS_Client : MonoBehaviour
     }
     void Start()
     {
-        ws = new WebSocket("ws://aeugame2022.herokuapp.com");
+        //ws = new WebSocket("ws://aeugame2022.herokuapp.com");
+        ws = new WebSocket("ws://localhost:8080");
         ws.OnMessage += (sender, e) =>
         {
             //Debug.Log("Mensagem recebida de " + ((WebSocket)sender).Url + ", Dado: " + e.Data);
@@ -36,12 +44,24 @@ public class WS_Client : MonoBehaviour
             //Debug.Log("opção recebida: "+option);
             switch (option)
             {
+                case "idplayer":
+                    Debug.Log("============IDplayerRecebido===========");
+                    idp = (string)data["id"];
+                    definirIDplayer = true;
+                    Debug.Log((string)data["id"]);
+                break;
+                case "partida":
+                    Debug.Log("============IDpartidaRecebido===========");
+                    idpart = (string)data["partida"];
+                    definirpartida = true;
+                    Debug.Log((string)data["partida"]);
+                break;
                 case "spawn":
                     //Debug.Log("Entrou no CheckSpawn!!!");
                     //checkSpawn = "spawn";
                 break;
                 case "ping":
-                    Debug.Log("Recebeu ping do servidor!");
+                    //Debug.Log("Recebeu ping do servidor!");
                 break;
             }
 
@@ -56,6 +76,19 @@ public class WS_Client : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        if(SceneManager.GetActiveScene().name == "Fase1"){
+        if(definirpartida){
+            Player.instance.IDpartida = idpart;
+            definirpartida = false;
+        }
+        if(definirIDplayer){
+            Player.instance.IDPlayer = idp;
+            Player.instance.idpronto = true;
+            definirIDplayer = false;
+        }
+        }
+        
+
         if (ws == null)
         {
             return;
@@ -69,21 +102,6 @@ public class WS_Client : MonoBehaviour
                     });
                 ws.Send(jsonPayload);
         }
-    }
-
-    private void LateUpdate()
-    {
-       /*  if (SceneManager.GetActiveScene().name == "Fase1")
-        {
-            //ws.Send("posição: " + Player.instance.transform.position + ",rotação: " + Player.instance.transform.rotation);
-               // ws.Send($@"{{'type':'posicao', 'data':'{Player.instance.transform.position}'}}");
-               var jsonPayload = JsonConvert.SerializeObject(new
-                    {
-                        type = "Heartbeat",
-                        data = "heartbeat"
-                    });
-                ws.Send(jsonPayload);
-        } */
     }
 
     void FecharConexao()
