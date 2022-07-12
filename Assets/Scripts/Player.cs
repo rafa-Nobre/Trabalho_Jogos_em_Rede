@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     float maxJumpHeigth = 2f;
     float timeToMaxHeight = 0.5f;
     //----------------------------------
-    private Animator anim;
+    public Animator anim;
 
     int animaux = 0;
     //public float speed;
@@ -57,6 +57,8 @@ public class Player : MonoBehaviour
     public string IDpartida = "";
 
     public bool idpronto = false;
+
+    public GameObject pontoDeSpawnPlayer;
     void Awake()
     {
         instance = this;
@@ -229,6 +231,16 @@ public class Player : MonoBehaviour
 
     public void AddItem(){
         itemscollected ++;
+    }
+
+    public void ResetarPlayer(){
+    if(IDPlayer.Equals(playerAtual)){
+       health = 3;
+       municao = 0;
+       anim.SetInteger("transition", 0);
+       var rposition = new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), 0, UnityEngine.Random.Range(-3.0f, 3.0f));
+       transform.position = pontoDeSpawnPlayer.transform.position + rposition;
+    }
     }
 
 }

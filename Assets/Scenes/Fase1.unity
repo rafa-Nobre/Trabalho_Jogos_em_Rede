@@ -8953,6 +8953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae48dee9618042a448b112e74fb084ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vidaDoPlayer: 3
   gameOverPanel: {fileID: 925390107}
 --- !u!4 &661587994
 Transform:
@@ -10013,7 +10014,7 @@ GameObject:
   - component: {fileID: 764853761}
   - component: {fileID: 764853760}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ButtonRetry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23085,6 +23086,7 @@ MonoBehaviour:
   IDPlayer: 
   liberarposicao: 0
   destruir: 0
+  anim: {fileID: 0}
   audiocontroller: {fileID: 588420108}
   characterBody: {fileID: 1838146230}
   health: 3
@@ -23093,6 +23095,7 @@ MonoBehaviour:
   enemys: 0
   IDpartida: 
   idpronto: 0
+  pontoDeSpawnPlayer: {fileID: 0}
 --- !u!4 &1838146230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 655b093beeb8d554993c8ceee3af6f92, type: 3}
