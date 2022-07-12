@@ -19290,7 +19290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   s: {fileID: 1462226067}
   splayer: {fileID: 81411738}
-  playerprefeb: {fileID: 2522885568217624245, guid: e1679800246e2b14f8b2a3f68fb27040, type: 3}
+  playerprefeb: {fileID: 2522885568217624245, guid: 0a72477f601e913468eda69f27716e46, type: 3}
 --- !u!1001 &1528291521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23095,7 +23095,7 @@ MonoBehaviour:
   enemys: 0
   IDpartida: 
   idpronto: 0
-  pontoDeSpawnPlayer: {fileID: 0}
+  pontoDeSpawnPlayer: {fileID: 81411738}
 --- !u!4 &1838146230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 655b093beeb8d554993c8ceee3af6f92, type: 3}

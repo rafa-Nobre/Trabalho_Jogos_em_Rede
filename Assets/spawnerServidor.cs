@@ -14,6 +14,8 @@ public class spawnerServidor : MonoBehaviour
     bool liberarpos = false;
 
     bool aux = true;
+
+    bool vivo = true;
     public GameObject splayer;
     public GameObject playerprefeb;
 
@@ -80,6 +82,7 @@ public class spawnerServidor : MonoBehaviour
                         string idpart = (string)data2["idPartida"];
                         string roty = (string)data2["ry"];
                         string ani = (string)data2["anim"];
+                        string v = (string)data2["vivo"];
                         x = float.Parse(ox, System.Globalization.CultureInfo.InvariantCulture);
                         y = float.Parse(oy, System.Globalization.CultureInfo.InvariantCulture);
                         z = float.Parse(oz, System.Globalization.CultureInfo.InvariantCulture);
@@ -87,6 +90,7 @@ public class spawnerServidor : MonoBehaviour
                         idpartida = idpart;
                         ry = float.Parse(roty, System.Globalization.CultureInfo.InvariantCulture);
                         anim = int.Parse(ani);
+                        vivo = bool.Parse(v);
                         //IDjogadores = (string)data["id"];
                     }
                     catch (Exception ex)
@@ -161,6 +165,7 @@ public class spawnerServidor : MonoBehaviour
             try
             {
                 jogadores[IDjogadores].transform.position = posicaojogadores;
+                jogadores[IDjogadores].vivo = vivo;
 
                 //Debug.Log(jogadores[IDjogadores].transform.position);
                 //=======anim==========

@@ -59,6 +59,8 @@ public class Player : MonoBehaviour
     public bool idpronto = false;
 
     public GameObject pontoDeSpawnPlayer;
+
+    private bool vivo = true;
     void Awake()
     {
         instance = this;
@@ -90,10 +92,12 @@ public class Player : MonoBehaviour
 
         //if(IDPlayer.Equals(playerAtual)){
             if(health > 0){
+                vivo = true;
                 Move();
             }else{
                 anim.SetInteger("transition", 6);
                 animaux = 6;
+                vivo = false;
             }
 
             if(itemscollected == 4 && auxItems==true){
@@ -118,6 +122,7 @@ public class Player : MonoBehaviour
                         z = transform.position.z,
                         ry = transform.localRotation.eulerAngles.y,
                         anim = animaux,
+                        vivo = vivo,
                         
                     });
                 WS_Client.instance.ws.Send(jsonPayload);
