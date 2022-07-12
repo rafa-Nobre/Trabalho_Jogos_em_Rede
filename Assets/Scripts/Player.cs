@@ -244,7 +244,7 @@ public class Player : MonoBehaviour
        municao = 0;
        anim.SetInteger("transition", 0);
        var rposition = new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), 0, UnityEngine.Random.Range(-3.0f, 3.0f));
-       transform.position = pontoDeSpawnPlayer.transform.position + rposition;
+       transform.position = new Vector3(456.38f, 2.17f, 518.71f) + rposition;
     //}
     }
 
