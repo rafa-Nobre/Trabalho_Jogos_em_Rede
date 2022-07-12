@@ -20,17 +20,33 @@ public class Menu : MonoBehaviour
             ShowGameOver();
         }else{
             if(Input.GetKeyDown(KeyCode.Escape)){
-                if(Time.timeScale == 1){
-                    gameOverPanel.SetActive(true);
-                    //Time.timeScale = 0;
-                    Cursor.visible = true;
-                    Cursor.lockState = CursorLockMode.None;
+                if(SceneManager.GetActiveScene().name == "singlePlayer"){
+                    if(Time.timeScale == 1){
+                        gameOverPanel.SetActive(true);
+                        Time.timeScale = 0;
+                        Cursor.visible = true;
+                        Cursor.lockState = CursorLockMode.None;
+                    }
+                    else{
+                        gameOverPanel.SetActive(false);
+                        Time.timeScale = 1;
+                        Cursor.visible = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                    }
                 }
                 else{
-                    gameOverPanel.SetActive(false);
-                    //Time.timeScale = 1;
-                    Cursor.visible = false;
-                    Cursor.lockState = CursorLockMode.Locked;
+                    //multiplayer
+                    if(gameOverPanel.activeSelf == false){
+                        gameOverPanel.SetActive(true);
+                        Cursor.visible = true;
+                        Cursor.lockState = CursorLockMode.None;
+
+                    }else{
+                        gameOverPanel.SetActive(false);
+                        Cursor.visible = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                    }
+
                 }
             }
         }
@@ -45,7 +61,7 @@ public class Menu : MonoBehaviour
 
     public void RestartGame(string lvlName){
         gameOverPanel.SetActive(false);
-        //Time.timeScale = 1;
+        Time.timeScale = 1;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         SceneManager.LoadScene(lvlName);
