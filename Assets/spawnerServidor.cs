@@ -32,12 +32,12 @@ public class spawnerServidor : MonoBehaviour
 
     bool posicaoNovojogador = false;
 
-    Dictionary<string, Player> jogadores;
+    Dictionary<string, PlayerBOT> jogadores;
     Dictionary<string, object> clientes;
     // Start is called before the first frame update
     void Start()
     {
-        jogadores = new Dictionary<string, Player>();
+        jogadores = new Dictionary<string, PlayerBOT>();
         clientes = new Dictionary<string, object>();
         posicaojogadores = splayer.transform.position;
 
@@ -133,7 +133,7 @@ public class spawnerServidor : MonoBehaviour
                 try
                 {
                     var rposition = new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), 0, UnityEngine.Random.Range(-10.0f, 10.0f));
-                    jogadores.Add(item.Key, Instantiate(playerprefeb, splayer.transform.position + rposition, playerprefeb.transform.rotation).GetComponent<Player>());
+                    jogadores.Add(item.Key, Instantiate(playerprefeb, splayer.transform.position + rposition, playerprefeb.transform.rotation).GetComponent<PlayerBOT>());
                     jogadores[item.Key].playerAtual = item.Key;
                     jogadores[item.Key].IDpartida = idpartida;
                     posicaoNovojogador = true; 

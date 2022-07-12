@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
            idpronto = false;
         }
 
-        if(IDPlayer.Equals(playerAtual)){
+        //if(IDPlayer.Equals(playerAtual)){
             if(health > 0){
                 Move();
             }else{
@@ -102,12 +102,12 @@ public class Player : MonoBehaviour
             }
 
             RunFaster();
-        }
+        //}
     }
 
     private void LateUpdate()
     {
-        if(IDPlayer.Equals(playerAtual) && liberarposicao){
+        if(/*IDPlayer.Equals(playerAtual) && */ liberarposicao){
                var jsonPayload = JsonConvert.SerializeObject(new
                     {
                         type = "posicao",
@@ -234,13 +234,13 @@ public class Player : MonoBehaviour
     }
 
     public void ResetarPlayer(){
-    if(IDPlayer.Equals(playerAtual)){
+    //if(IDPlayer.Equals(playerAtual)){
        health = 3;
        municao = 0;
        anim.SetInteger("transition", 0);
        var rposition = new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), 0, UnityEngine.Random.Range(-3.0f, 3.0f));
        transform.position = pontoDeSpawnPlayer.transform.position + rposition;
-    }
+    //}
     }
 
 }
