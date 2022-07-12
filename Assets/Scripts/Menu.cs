@@ -55,7 +55,7 @@ public class Menu : MonoBehaviour
         gameOverPanel.SetActive(false);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        Player.instance.ResetarPlayer();
+        Player.instance.tp = true;
     }
 
     public void fecharWS(){

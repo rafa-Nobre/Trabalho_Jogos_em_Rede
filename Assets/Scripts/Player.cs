@@ -61,6 +61,8 @@ public class Player : MonoBehaviour
     public GameObject pontoDeSpawnPlayer;
 
     private bool vivo = true;
+
+    public bool tp = false;
     void Awake()
     {
         instance = this;
@@ -107,6 +109,11 @@ public class Player : MonoBehaviour
 
             RunFaster();
         //}
+
+        if(tp){
+            ResetarPlayer();
+            tp = false;
+        }
     }
 
     private void LateUpdate()
@@ -244,7 +251,7 @@ public class Player : MonoBehaviour
        municao = 0;
        anim.SetInteger("transition", 0);
        var rposition = new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), 0, UnityEngine.Random.Range(-3.0f, 3.0f));
-       transform.position = new Vector3(456.38f, 2.17f, 518.71f) + rposition;
+       this.transform.position = new Vector3(456.38f, 2.17f, 518.71f) + rposition;
     //}
     }
 
