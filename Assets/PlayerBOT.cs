@@ -28,15 +28,15 @@ public class PlayerBOT : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        if(!vivo){
+       /*  if(!vivo){
             RestartPlayerBot();
-        }
+        } */
 
     }
 
-    void RestartPlayerBot(){
+    /* void RestartPlayerBot(){
        var rposition = new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f), 0, UnityEngine.Random.Range(-3.0f, 3.0f));
        transform.position = new Vector3(456.38f, 2.17f, 518.71f) + rposition;
        vivo = true;
-    }
+    } */
 }
