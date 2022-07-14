@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public int maxMessages = 25;
+    public GameObject chatPanel, textObject;
     
     [SerializeField]
     List<Message> messageList = new List<Message>();
