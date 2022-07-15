@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,15 +17,41 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     List<Message> messageList = new List<Message>();
 
+    string chatdata = "vazio";
+    bool msg = false;
+
     void Start()
     {
-        
+        WS_Client.instance.ws.OnMessage += (sender, e) =>
+        {
+            var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(e.Data);
+            string option = (string)data["type"];
+            switch (option)
+            {
+                case "chat-g":
+                    Debug.Log("chat-global-msg");
+                    chatdata = (string)data["data"];
+                    msg = true;
+                    break;
+            }
+
+        };
     }
     
     void Update() {
+        if(msg){
+            SendMessageToChat("nome-alguem" + ": " + chatdata, Message.MessageType.playerMessage);
+            msg = false;
+        }
         if(chatBox.text != "") {
             if(Input.GetKeyDown(KeyCode.Return)) {
-                SendMessageToChat(userField + ": " + chatBox.text, Message.MessageType.playerMessage);
+                var jsonPayload = JsonConvert.SerializeObject(new
+                {
+                    type = "chat-global",
+                    data = chatBox.text
+                });
+                WS_Client.instance.ws.Send(jsonPayload);
+                //SendMessageToChat(userField + ": " + chatBox.text, Message.MessageType.playerMessage);
                 chatBox.text = "";
             }
         }else {

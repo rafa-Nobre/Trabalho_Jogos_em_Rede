@@ -28,11 +28,9 @@ public class WS_Client : MonoBehaviour
             Destroy(this.gameObject);
         }
         DontDestroyOnLoad(this.gameObject);
-    }
-    void Start()
-    {
-        ws = new WebSocket("ws://aeugame2022.herokuapp.com");
-        //ws = new WebSocket("ws://localhost:8080");
+
+        //ws = new WebSocket("ws://aeugame2022.herokuapp.com");
+        ws = new WebSocket("ws://localhost:8080"); //testar localmente
         ws.OnMessage += (sender, e) =>
         {
             //Debug.Log("Mensagem recebida de " + ((WebSocket)sender).Url + ", Dado: " + e.Data);
@@ -67,6 +65,10 @@ public class WS_Client : MonoBehaviour
 
         };
         ws.Connect();
+    }
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame

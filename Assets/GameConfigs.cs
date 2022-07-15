@@ -15,6 +15,8 @@ public class GameConfigs : MonoBehaviour
 
     public GameObject multiPanel;
 
+    public GameObject lobbyPanel;
+
     public Slider sensiXslider;
     public Slider sensiYslider;
 
@@ -33,6 +35,8 @@ public class GameConfigs : MonoBehaviour
 
     private List<string> resolutions = new List<string>();
     private List<string> quality = new List<string>();
+
+    bool entrarLobby = false;
     // Start is called before the first frame update
     private void Awake() {
         if(PlayerPrefs.HasKey("resW") && PlayerPrefs.HasKey("resH")){
@@ -44,6 +48,20 @@ public class GameConfigs : MonoBehaviour
     }
     void Start()
     {
+        WS_Client.instance.ws.OnMessage += (sender, e) =>
+        {
+            var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(e.Data);
+            string option = (string)data["type"];
+            switch (option)
+            {
+                case "enter-lobby":
+                    Debug.Log("entrou no eterlobby!");
+                    //string desc = (string)data["id"];
+                    entrarLobby = true;
+                    break;
+            }
+
+        };
         //Resolution[] arrResolution = Screen.resolutions;
         //foreach (Resolution r in arrResolution){}
             resolutions.Add(string.Format("640 X 360"));
@@ -124,6 +142,10 @@ public class GameConfigs : MonoBehaviour
         multiPanel.SetActive(false);
     }
 
+    public void BackLobby(){
+        lobbyPanel.SetActive(false);
+    }
+
      public void OptionsMenu(){
         optionsPanel.SetActive(true);
         sensiTextX.text = sensiXvalue.ToString();
@@ -132,6 +154,10 @@ public class GameConfigs : MonoBehaviour
 
     public void MultiplayerMenu(){
         multiPanel.SetActive(true);
+    }
+
+    public void LobbyPanel(){
+        lobbyPanel.SetActive(true);
     }
 
     public void EntrarButton(){
@@ -166,6 +192,9 @@ public class GameConfigs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(entrarLobby){
+            LobbyPanel();
+            entrarLobby = false;
+        }
     }
 }
