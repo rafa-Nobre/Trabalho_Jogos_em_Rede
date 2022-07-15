@@ -60,6 +60,7 @@ public class Menu : MonoBehaviour
     }
 
     public void RestartGame(string lvlName){
+        //apenas para singleplayer
         gameOverPanel.SetActive(false);
         Time.timeScale = 1;
         Cursor.visible = false;
