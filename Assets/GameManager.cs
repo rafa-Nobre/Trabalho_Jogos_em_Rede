@@ -48,7 +48,8 @@ public class GameManager : MonoBehaviour
                 var jsonPayload = JsonConvert.SerializeObject(new
                 {
                     type = "chat-global",
-                    data = chatBox.text
+                    data = chatBox.text,
+                    nome = GameConfigs.nomeplayer,
                 });
                 WS_Client.instance.ws.Send(jsonPayload);
                 //SendMessageToChat(userField + ": " + chatBox.text, Message.MessageType.playerMessage);

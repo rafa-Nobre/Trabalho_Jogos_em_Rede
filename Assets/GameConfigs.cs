@@ -37,6 +37,8 @@ public class GameConfigs : MonoBehaviour
     private List<string> quality = new List<string>();
 
     bool entrarLobby = false;
+
+    public static string nomeplayer = "none"; 
     // Start is called before the first frame update
     private void Awake() {
         if(PlayerPrefs.HasKey("resW") && PlayerPrefs.HasKey("resH")){
@@ -56,7 +58,7 @@ public class GameConfigs : MonoBehaviour
             {
                 case "enter-lobby":
                     Debug.Log("entrou no eterlobby!");
-                    //string desc = (string)data["id"];
+                    nomeplayer = (string)data["nome"];
                     entrarLobby = true;
                     break;
             }
