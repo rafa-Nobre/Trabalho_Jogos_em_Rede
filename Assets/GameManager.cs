@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     
     void Update() {
         if(msg){
-            SendMessageToChat("nome-alguem" + ": " + chatdata, Message.MessageType.playerMessage);
+            SendMessageToChat(GameConfigs.nomeplayer + ": " + chatdata, Message.MessageType.playerMessage);
             msg = false;
         }
         if(chatBox.text != "") {
