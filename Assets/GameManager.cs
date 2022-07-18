@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     List<Message> messageList = new List<Message>();
 
     string chatdata = "vazio";
+    string nomep = "none";
     bool msg = false;
 
     void Start()
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
                 case "chat-g":
                     Debug.Log("chat-global-msg");
                     chatdata = (string)data["data"];
+                    nomep = (string)data["nome"];
                     msg = true;
                     break;
             }
@@ -40,7 +42,7 @@ public class GameManager : MonoBehaviour
     
     void Update() {
         if(msg){
-            SendMessageToChat(GameConfigs.nomeplayer + ": " + chatdata, Message.MessageType.playerMessage);
+            SendMessageToChat(nomep + ": " + chatdata, Message.MessageType.playerMessage);
             msg = false;
         }
         if(chatBox.text != "") {
