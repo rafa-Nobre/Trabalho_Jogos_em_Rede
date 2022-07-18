@@ -14,7 +14,7 @@ public class WS_Client : MonoBehaviour
     bool definirpartida = false;
     bool definirIDplayer = false;
 
-    string idp = "";
+    public string idp = "";
 
     string idpart = "";
 
