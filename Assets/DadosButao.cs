@@ -9,11 +9,10 @@ public class DadosButao : MonoBehaviour
     public int quantidadeJogadores = 0;
     public string nomeSala = "";
 
-    Button  butao;
     // Start is called before the first frame update
     void Start()
     {
-        butao.GetComponent<Button>().onClick.AddListener(delegate { btnClicked(); });
+        this.gameObject.GetComponent<Button>().onClick.AddListener(delegate { btnClicked(); });
     }
 
     // Update is called once per frame
