@@ -7,12 +7,21 @@ public class GerenciadorSalas : MonoBehaviour
 {
     public GameObject salaPanel, butaoSala;
     public InputField inputSala;
+
     bool novasala = false;
     string nomePartida = "sala";
     string qtdPlayers = "";
+
+    Dictionary<string, object> datasalas;
+
+    bool chegousalas = false;
+
+    List<GameObject> todassala;
     // Start is called before the first frame update
     void Start()
     {
+        todassala = new List<GameObject>();
+        datasalas = new Dictionary<string, object>();
         WS_Client.instance.ws.OnMessage += (sender, e) =>
         {
             var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(e.Data);
@@ -25,6 +34,11 @@ public class GerenciadorSalas : MonoBehaviour
                     qtdPlayers = (string)data["qtdPlayers"];
                     novasala = true;
                     Debug.Log("saiu de sala-criada!");
+                    break;
+                case "todas-salas":
+                    Debug.Log("salas recebidas!");
+                    datasalas = data;
+                    chegousalas = true;
                     break;
             }
 
@@ -39,11 +53,29 @@ public class GerenciadorSalas : MonoBehaviour
             CriarSala(nomePartida,x);
             novasala = false;
          }
+        if(chegousalas){
+            var sob = JsonConvert.SerializeObject(datasalas["salas"]);
+            var obb = JsonConvert.DeserializeObject<Dictionary<string, object>>(sob);
+            //nome: nome, players: vplayers
+            foreach (var item in obb)
+            {
+                var sob2 = JsonConvert.SerializeObject(obb[item.Key]);
+                var obb2 = JsonConvert.DeserializeObject<MeuObjeto>(sob2);
+                //obb[item.Key]["nome"] = n;
+                //int [] b = JsonConverter<ArrayList>();
+                //int [] v = (arr)obb2["players"];
+                Debug.Log("nome obb2:"+obb2.nome+"players:"+obb2.players.Length);
+                CriarSala(obb2.nome,obb2.players.Length);
+            }
+            chegousalas = false;
+        }
+
     }
 
     void CriarSala(string np, int qtdp){
-        GameObject sala = Instantiate(butaoSala, salaPanel.transform);
-        Text texto = sala.GetComponentInChildren<Text>();
+        GameObject butaosala = Instantiate(butaoSala, salaPanel.transform);
+        todassala.Add(butaosala);
+        Text texto = butaosala.GetComponentInChildren<Text>();
         texto.text = np + " - " + qtdp.ToString() + "/4";
     }
 
@@ -58,5 +90,27 @@ public class GerenciadorSalas : MonoBehaviour
                 WS_Client.instance.ws.Send(jsonPayload);
             
         }
+    }
+
+    public void ButtonRefresh(){
+        foreach (var item in todassala)
+        {
+            Destroy(item);
+        }
+       todassala.Clear();
+        var jsonPayload = JsonConvert.SerializeObject(new
+                {
+                    type = "status-salas",
+                    id = WS_Client.instance.idp,
+                });
+                WS_Client.instance.ws.Send(jsonPayload);
+    }
+
+
+   [System.Serializable]
+    public class MeuObjeto {
+    public string nome;
+    public string [] players;
+
     }
 }
