@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
 public class GerenciadorSalas : MonoBehaviour
 {
     public GameObject salaPanel, butaoSala;
@@ -17,6 +18,8 @@ public class GerenciadorSalas : MonoBehaviour
     bool chegousalas = false;
 
     List<GameObject> todassala;
+
+    bool jogadorPodeEntrarSala = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +43,12 @@ public class GerenciadorSalas : MonoBehaviour
                     datasalas = data;
                     chegousalas = true;
                     break;
+                case "jogador-pode-entrar":
+                    jogadorPodeEntrarSala = true;
+                    break;
+                case "jogador-nao-pode-entrar":
+                    Debug.Log("sala cheia - servidor!");
+                    break;
             }
 
         };
@@ -48,6 +57,10 @@ public class GerenciadorSalas : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(jogadorPodeEntrarSala){
+            jogadorPodeEntrarSala = false;
+            SceneManager.LoadScene("Fase1");
+        }
          if(novasala){
             int x =  int.Parse(qtdPlayers);
             CriarSala(nomePartida,x);
@@ -76,6 +89,9 @@ public class GerenciadorSalas : MonoBehaviour
         GameObject butaosala = Instantiate(butaoSala, salaPanel.transform);
         todassala.Add(butaosala);
         Text texto = butaosala.GetComponentInChildren<Text>();
+        DadosButao dadosDaSala =  butaosala.GetComponentInChildren<DadosButao>();
+        dadosDaSala.nomeSala = np;
+        dadosDaSala.quantidadeJogadores = qtdp;
         texto.text = np + " - " + qtdp.ToString() + "/4";
     }
 
@@ -105,6 +121,7 @@ public class GerenciadorSalas : MonoBehaviour
                 });
                 WS_Client.instance.ws.Send(jsonPayload);
     }
+
 
 
    [System.Serializable]
