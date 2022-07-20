@@ -20,6 +20,8 @@ public class GerenciadorSalas : MonoBehaviour
     List<GameObject> todassala;
 
     bool jogadorPodeEntrarSala = false;
+
+    string idSala = "";
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +46,7 @@ public class GerenciadorSalas : MonoBehaviour
                     chegousalas = true;
                     break;
                 case "jogador-pode-entrar":
+                    idSala = (string)data["idSala"];
                     jogadorPodeEntrarSala = true;
                     break;
                 case "jogador-nao-pode-entrar":
@@ -58,6 +61,8 @@ public class GerenciadorSalas : MonoBehaviour
     void Update()
     {
         if(jogadorPodeEntrarSala){
+            WS_Client.instance.idpart =  idSala;
+            Debug.Log("podeentrar-idsala:"+ WS_Client.instance.idpart);
             jogadorPodeEntrarSala = false;
             SceneManager.LoadScene("Fase1");
         }

@@ -163,6 +163,7 @@ public class GameConfigs : MonoBehaviour
     }
 
     public void EntrarButton(){
+        if(!nomeConexao.text.Equals("")){
         var jsonPayload = JsonConvert.SerializeObject(new
                     {
                         type = "login",
@@ -170,9 +171,14 @@ public class GameConfigs : MonoBehaviour
                         senha = senhaConexao.text
                     });
                 WS_Client.instance.ws.Send(jsonPayload);
+        }
+        else{
+            Debug.Log("login-nome-vazio!");
+        }
     }
 
     public void CadastrarButton(){
+        if(!nomeCadastro.text.Equals("") && !emailCadastro.text.Equals("") && !senhaCadastro.text.Equals("")){
         var jsonPayload = JsonConvert.SerializeObject(new
                     {
                         type = "cadastro",
@@ -181,6 +187,10 @@ public class GameConfigs : MonoBehaviour
                         senha = senhaCadastro.text
                     });
                 WS_Client.instance.ws.Send(jsonPayload);
+        }
+        else{
+            Debug.Log("dados vazios!");
+        }
     }
 
     public void ChangeSlideValueX(){

@@ -34,6 +34,10 @@ public class spawnerServidor : MonoBehaviour
 
     bool posicaoNovojogador = false;
 
+    bool desconectou = false;
+
+    string desconectouID = "";
+
     Dictionary<string, PlayerBOT> jogadores;
     Dictionary<string, object> clientes;
     // Start is called before the first frame update
@@ -43,12 +47,7 @@ public class spawnerServidor : MonoBehaviour
         clientes = new Dictionary<string, object>();
         posicaojogadores = splayer.transform.position;
 
-        var jsonPayload = JsonConvert.SerializeObject(new
-        {
-            type = "Fase",
-            data = "1"
-        });
-        WS_Client.instance.ws.Send(jsonPayload);
+        StartCoroutine(EntrouFase1());
 
         WS_Client.instance.ws.OnMessage += (sender, e) =>
         {
@@ -63,13 +62,14 @@ public class spawnerServidor : MonoBehaviour
                     //jogadores[Player.instance.IDPlayer] = Player.instance; //===============================
                     break;
                 case "spawn-player":
+                    try{
                     Debug.Log("Entrou no SpawnPlayer!!!");
                     spawnPlayer = true; //============================
-                    IDjogadores = (string)data["id"];
-                    idpartida = (string)data["idpart"];
+                    IDjogadores = (string)data["pid"];
                     clientes = data;
                     Debug.Log(data["objeto"]);
                     Player.instance.liberarposicao = true;
+                    }catch{Debug.Log("Sem acesso a chaves [objeto]! em case:spawn-player");}
                     break;
                 case "posicao-jogadores":
                     var data2 = JsonConvert.DeserializeObject<Dictionary<string, object>>(e.Data);
@@ -101,10 +101,9 @@ public class spawnerServidor : MonoBehaviour
                     //Debug.Log("x"+x+"y"+y+"z"+z);
                     break;
                 case "desconectou":
-                    string desc = (string)data["id"];
-                    jogadores[desc].destruir = true;
-                    jogadores.Remove(desc);
-                    Debug.Log("player:"+desc+" desconectou!");
+                    desconectouID = (string)data["id"];
+                    desconectou = true;
+                    Debug.Log("player:"+desconectouID+" desconectou!");
                     break;
             }
 
@@ -114,6 +113,15 @@ public class spawnerServidor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(desconectou){
+            try{
+            jogadores[desconectouID].destruir = true;
+            jogadores.Remove(desconectouID);
+            }catch{
+                Debug.Log("erro na remoção do player!!");
+            }
+            desconectou = false;
+        }
         if(Player.instance.idpronto && aux){
             idprincipal = Player.instance.IDPlayer;
             aux = false;
@@ -125,21 +133,31 @@ public class spawnerServidor : MonoBehaviour
         }
         if (spawnPlayer)
         {
+            try{
             //var objeto = clientes["objeto"];
             //var objeto = JsonConvert.DeserializeObject<Dictionary<string, object>>((string)clientes["objeto"]);
             var ob = JsonConvert.SerializeObject(clientes["objeto"]);
-            var obb = JsonConvert.DeserializeObject<Dictionary<string, object>>(ob);
-            Debug.Log(obb);
-            foreach (var item in obb)
-            {
-                Debug.Log("item:"+item.Key+" id:"+idprincipal);
-                if(!((item.Key).Equals(idprincipal)) && !jogadores.ContainsKey(item.Key)){
+            Debug.Log("antesdoReplace:"+ob);
+            var replacement = ob.Replace("null", "\"-\"");
+            Debug.Log("DepoisdoReplace:"+replacement);
+            //var obb = JsonConvert.DeserializeObject<Dictionary<string, object>>(ob);
+            var obb = JsonConvert.DeserializeObject<MeuObjeto>(replacement);
+            Debug.Log("obb:"+obb);
+            foreach (var item in obb.players)
+            {   
+                if(item.Equals("") || item.Equals("null") || item == null || item.Equals("-")){Debug.Log("item vazio! continuando.."); continue;}
+                //Debug.Log("item:"+item.Key+" id:"+idprincipal);
+                Debug.Log("item:"+item);
+                //if(!((item.Key).Equals(idprincipal)) && !jogadores.ContainsKey(item.Key)){
+                if(!((item).Equals(idprincipal)) && !jogadores.ContainsKey(item)){
                 try
                 {
                     var rposition = new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), 0, UnityEngine.Random.Range(-10.0f, 10.0f));
-                    jogadores.Add(item.Key, Instantiate(playerprefeb, splayer.transform.position + rposition, playerprefeb.transform.rotation).GetComponent<PlayerBOT>());
-                    jogadores[item.Key].playerAtual = item.Key;
-                    jogadores[item.Key].IDpartida = idpartida;
+                    //jogadores.Add(item.Key, Instantiate(playerprefeb, splayer.transform.position + rposition, playerprefeb.transform.rotation).GetComponent<PlayerBOT>());
+                    //jogadores[item.Key].playerAtual = item.Key;
+                    jogadores.Add(item, Instantiate(playerprefeb, splayer.transform.position + rposition, playerprefeb.transform.rotation).GetComponent<PlayerBOT>());
+                    jogadores[item].playerAtual = item;
+                    //jogadores[item.Key].IDpartida = idpartida;
                     posicaoNovojogador = true; 
                 }
                 catch
@@ -150,6 +168,10 @@ public class spawnerServidor : MonoBehaviour
                     Debug.Log("item contem Chave idprincipal ou chaves repetidas!");
                 }
                 //Debug.Log(item.Key);
+            }
+            }
+            catch{
+                Debug.Log("=Erro em spawnplayer!=");
             }
            
             spawnPlayer = false;
@@ -178,7 +200,28 @@ public class spawnerServidor : MonoBehaviour
             
 
             //obj[numPlayers].transform.position = posicaojogadores;
+            liberarpos = false;
         }
+
+    }
+
+    IEnumerator EntrouFase1(){
+        yield return new WaitForSeconds(1.5f);
+        var jsonPayload = JsonConvert.SerializeObject(new
+        {
+            type = "Fase",
+            data = "1",
+            partidaid = Player.instance.IDpartida,
+        });
+        WS_Client.instance.ws.Send(jsonPayload);
+
+        Debug.Log("EntrouFase1Coroutine!");
+    }
+
+    [System.Serializable]
+    public class MeuObjeto {
+    public string nome;
+    public string [] players;
 
     }
 

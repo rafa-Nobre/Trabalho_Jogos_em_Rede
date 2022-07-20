@@ -77,6 +77,7 @@ public class Menu : MonoBehaviour
 
     public void fecharWS(){
         WS_Client.instance.ws.Close();
+        WS_Client.instance.destruirws = true;
     }
 
     public void Exit(){

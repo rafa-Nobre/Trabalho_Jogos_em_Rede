@@ -11,12 +11,14 @@ public class WS_Client : MonoBehaviour
     public static WS_Client instance;
     public WebSocket ws;
 
-    bool definirpartida = false;
+    bool definirpartida = true;
     bool definirIDplayer = false;
 
     public string idp = "";
 
-    string idpart = "";
+    public string idpart = "";
+
+    public bool destruirws = false;
 
     void Awake()
     {
@@ -29,8 +31,8 @@ public class WS_Client : MonoBehaviour
         }
         DontDestroyOnLoad(this.gameObject);
 
-        ws = new WebSocket("ws://aeugame2022.herokuapp.com");
-        //ws = new WebSocket("ws://localhost:8080"); //testar localmente
+        //ws = new WebSocket("ws://aeugame2022.herokuapp.com");
+        ws = new WebSocket("ws://localhost:8080"); //testar localmente
         ws.OnMessage += (sender, e) =>
         {
             //Debug.Log("Mensagem recebida de " + ((WebSocket)sender).Url + ", Dado: " + e.Data);
@@ -50,9 +52,9 @@ public class WS_Client : MonoBehaviour
                 break;
                 case "partida":
                     Debug.Log("============IDpartidaRecebido===========");
-                    idpart = (string)data["partida"];
-                    definirpartida = true;
-                    Debug.Log((string)data["partida"]);
+                    //idpart = (string)data["partida"];
+                    //definirpartida = true;
+                    //Debug.Log((string)data["partida"]);
                 break;
                 case "spawn":
                     //Debug.Log("Entrou no CheckSpawn!!!");
@@ -74,6 +76,10 @@ public class WS_Client : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(destruirws){
+            Destroy(this.gameObject);
+        }
+
         if(SceneManager.GetActiveScene().name == "singlePlayer"){
             Destroy(this.gameObject);
         }
