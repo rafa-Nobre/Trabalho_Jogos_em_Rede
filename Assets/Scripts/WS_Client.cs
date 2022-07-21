@@ -75,6 +75,7 @@ public class WS_Client : MonoBehaviour
                 };
         ws.OnClose += (sender, e ) =>
         {
+            Player.instance.conexaoWS = false;
             Debug.Log("Ws fechado!");
         };
     }
@@ -111,15 +112,7 @@ public class WS_Client : MonoBehaviour
         {
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //ws.Send(@"{'type':'dados', 'data': 'olá do cliente'}");
-            var jsonPayload = JsonConvert.SerializeObject(new
-                    {
-                        type = "Ping",
-                    });
-                ws.Send(jsonPayload);
-        }
+        
     }
 
     void FecharConexao()

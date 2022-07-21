@@ -63,6 +63,8 @@ public class Player : MonoBehaviour
     private bool vivo = true;
 
     public bool tp = false;
+
+    public bool conexaoWS = true;
     void Awake()
     {
         instance = this;
@@ -77,6 +79,7 @@ public class Player : MonoBehaviour
         var rposition = new Vector3(UnityEngine.Random.Range(-2.0f, 2.0f), 0, UnityEngine.Random.Range(-2.0f, 2.0f));
         transform.position = transform.position + rposition;
 
+        StartCoroutine(EnviarPosicaoServidor());
     }
 
     // Update is called once per frame
@@ -118,22 +121,29 @@ public class Player : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(/*IDPlayer.Equals(playerAtual) && */ WS_Client.instance.ws.IsAlive && liberarposicao){
-               var jsonPayload = JsonConvert.SerializeObject(new
-                    {
-                        type = "posicao",
-                        idPlayer = IDPlayer,
-                        idPartida = IDpartida,
-                        x = transform.position.x,
-                        y = transform.position.y,
-                        z = transform.position.z,
-                        ry = transform.localRotation.eulerAngles.y,
-                        anim = animaux,
-                        vivo = vivo,
-                        
-                    });
-                WS_Client.instance.ws.Send(jsonPayload);
-                //Debug.Log("posicao player0: x"+transform.position.x+" y"+transform.position.y+" z"+transform.position.z);
+        
+    }
+
+    IEnumerator EnviarPosicaoServidor(){
+        while(conexaoWS){
+            yield return new WaitForSecondsRealtime(0.034f); //30fps dados enviados pro servidor
+            if(liberarposicao && conexaoWS){
+                var jsonPayload = JsonConvert.SerializeObject(new
+                        {
+                            type = "posicao",
+                            idPlayer = IDPlayer,
+                            idPartida = IDpartida,
+                            x = transform.position.x,
+                            y = transform.position.y,
+                            z = transform.position.z,
+                            ry = transform.localRotation.eulerAngles.y,
+                            anim = animaux,
+                            vivo = vivo,
+                            
+                        });
+                    WS_Client.instance.ws.Send(jsonPayload);
+                    //Debug.Log("posicao player0: x"+transform.position.x+" y"+transform.position.y+" z"+transform.position.z);
+            }
         }
     }
 
