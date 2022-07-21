@@ -13,6 +13,8 @@ public class PlayerBOT : MonoBehaviour
     public bool vivo = true;
 
     public Animator anim;
+
+    public audio audiocontroller;
     void Awake()
     {
         instance = this;
@@ -34,6 +36,9 @@ public class PlayerBOT : MonoBehaviour
             RestartPlayerBot();
         } */
 
+    }
+    public void Playsteps(){
+        audiocontroller.FX();
     }
 
     /* void RestartPlayerBot(){

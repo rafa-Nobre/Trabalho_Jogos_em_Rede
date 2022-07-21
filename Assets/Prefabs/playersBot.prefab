@@ -1893,6 +1893,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ef0c787b54df6948b0fe409531d7f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destruir: 0
+  playerAtual: 
+  IDpartida: 
+  vivo: 1
+  anim: {fileID: 0}
+  audiocontroller: {fileID: 3441452563400127927}
 --- !u!1 &2792020633128832947
 GameObject:
   m_ObjectHideFlags: 0
