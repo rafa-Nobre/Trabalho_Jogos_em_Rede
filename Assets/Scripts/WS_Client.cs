@@ -31,8 +31,8 @@ public class WS_Client : MonoBehaviour
         }
         DontDestroyOnLoad(this.gameObject);
 
-        //ws = new WebSocket("ws://aeugame2022.herokuapp.com");
-        ws = new WebSocket("ws://localhost:8080"); //testar localmente
+        ws = new WebSocket("ws://aeugame2022.herokuapp.com");
+        //ws = new WebSocket("ws://localhost:8080"); //testar localmente
         ws.OnMessage += (sender, e) =>
         {
             //Debug.Log("Mensagem recebida de " + ((WebSocket)sender).Url + ", Dado: " + e.Data);
