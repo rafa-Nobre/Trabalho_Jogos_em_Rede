@@ -11,6 +11,8 @@ public class PlayerBOT : MonoBehaviour
     public string IDpartida = "";
 
     public bool vivo = true;
+
+    public Animator anim;
     void Awake()
     {
         instance = this;
@@ -18,7 +20,7 @@ public class PlayerBOT : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame

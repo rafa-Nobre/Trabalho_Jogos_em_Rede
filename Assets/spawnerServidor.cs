@@ -188,6 +188,7 @@ public class spawnerServidor : MonoBehaviour
             {
                 jogadores[IDjogadores].transform.position = posicaojogadores;
                 jogadores[IDjogadores].vivo = vivo;
+                jogadores[IDjogadores].anim.SetInteger("transition", anim);
 
                 //Debug.Log(jogadores[IDjogadores].transform.position);
                 //=======anim==========
