@@ -95,7 +95,7 @@ public class spawnerServidor : MonoBehaviour
                     }
                     catch (Exception ex)
                     {
-                        Debug.Log("erro:" + ex);
+                        Debug.Log("erro em posicao-jogadores em spawnerServidor:" + ex);
                     }
                     liberarpos = true;
                     //Debug.Log("x"+x+"y"+y+"z"+z);

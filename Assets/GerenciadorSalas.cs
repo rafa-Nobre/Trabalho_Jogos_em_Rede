@@ -101,7 +101,7 @@ public class GerenciadorSalas : MonoBehaviour
     }
 
     public void ButtonEnviarSala(){
-        if(inputSala.text != "") {
+        if(inputSala.text != "" && WS_Client.instance.ws.IsAlive) {
                 var jsonPayload = JsonConvert.SerializeObject(new
                 {
                     type = "criar-sala",
@@ -119,12 +119,14 @@ public class GerenciadorSalas : MonoBehaviour
             Destroy(item);
         }
        todassala.Clear();
+       if(WS_Client.instance.ws.IsAlive){
         var jsonPayload = JsonConvert.SerializeObject(new
                 {
                     type = "status-salas",
                     id = WS_Client.instance.idp,
                 });
                 WS_Client.instance.ws.Send(jsonPayload);
+       }
     }
 
 

@@ -118,7 +118,7 @@ public class Player : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(/*IDPlayer.Equals(playerAtual) && */ liberarposicao){
+        if(/*IDPlayer.Equals(playerAtual) && */ WS_Client.instance.ws.IsAlive && liberarposicao){
                var jsonPayload = JsonConvert.SerializeObject(new
                     {
                         type = "posicao",

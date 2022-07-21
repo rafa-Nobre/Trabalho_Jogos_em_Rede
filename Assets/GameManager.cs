@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
             msg = false;
         }
         if(chatBox.text != "") {
-            if(Input.GetKeyDown(KeyCode.Return)) {
+            if(Input.GetKeyDown(KeyCode.Return) && WS_Client.instance.ws.IsAlive) {
                 var jsonPayload = JsonConvert.SerializeObject(new
                 {
                     type = "chat-global",

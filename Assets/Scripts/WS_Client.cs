@@ -67,6 +67,16 @@ public class WS_Client : MonoBehaviour
 
         };
         ws.Connect();
+        ws.OnError += (sender, e) =>
+                {
+                    Debug.Log("Erro detectado em WS, fechando WS...");
+                    ws.Close();
+                    ws = null;
+                };
+        ws.OnClose += (sender, e ) =>
+        {
+            Debug.Log("Ws fechado!");
+        };
     }
     void Start()
     {

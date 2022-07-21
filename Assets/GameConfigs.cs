@@ -156,6 +156,10 @@ public class GameConfigs : MonoBehaviour
 
     public void MultiplayerMenu(){
         multiPanel.SetActive(true);
+        if(PlayerPrefs.HasKey("nomeConexao") && PlayerPrefs.HasKey("senhaConexao")){
+            nomeConexao.text = PlayerPrefs.GetString("nomeConexao");
+            senhaConexao.text = PlayerPrefs.GetString("senhaConexao");
+        }
     }
 
     public void LobbyPanel(){
@@ -163,7 +167,11 @@ public class GameConfigs : MonoBehaviour
     }
 
     public void EntrarButton(){
-        if(!nomeConexao.text.Equals("")){
+        if(PlayerPrefs.HasKey("nomeConexao") && PlayerPrefs.HasKey("senhaConexao")){}
+        PlayerPrefs.SetString("nomeConexao",nomeConexao.text);
+        PlayerPrefs.SetString("senhaConexao",senhaConexao.text);
+
+        if(!nomeConexao.text.Equals("") && WS_Client.instance.ws.IsAlive){
         var jsonPayload = JsonConvert.SerializeObject(new
                     {
                         type = "login",
@@ -173,12 +181,16 @@ public class GameConfigs : MonoBehaviour
                 WS_Client.instance.ws.Send(jsonPayload);
         }
         else{
-            Debug.Log("login-nome-vazio!");
+            Debug.Log("login-nome-vazio! ou ws-closed");
+        }
+        if(!WS_Client.instance.ws.IsAlive){
+            WS_Client.instance.ws.Connect();
+            Debug.Log("Reconectando...");
         }
     }
 
     public void CadastrarButton(){
-        if(!nomeCadastro.text.Equals("") && !emailCadastro.text.Equals("") && !senhaCadastro.text.Equals("")){
+        if(!nomeCadastro.text.Equals("") && !emailCadastro.text.Equals("") && !senhaCadastro.text.Equals("") && WS_Client.instance.ws.IsAlive){
         var jsonPayload = JsonConvert.SerializeObject(new
                     {
                         type = "cadastro",
