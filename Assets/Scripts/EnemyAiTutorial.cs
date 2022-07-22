@@ -29,6 +29,8 @@ public class EnemyAiTutorial : MonoBehaviour, IShotHit
 
     AudioSource audioSource;
 
+    public GameObject OrigemTiroEnemy;
+
     private void Awake()
     {
         player = GameObject.Find("WolfGirl").transform;
@@ -87,9 +89,9 @@ public class EnemyAiTutorial : MonoBehaviour, IShotHit
         if (!alreadyAttacked)
         {
             ///Attack code here
-            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            Rigidbody rb = Instantiate(projectile, OrigemTiroEnemy.transform.position, Quaternion.identity).GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+            rb.AddForce(transform.up * 2f, ForceMode.Impulse);
             ///End of attack code
 
             alreadyAttacked = true;
